@@ -26,7 +26,7 @@ handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 LOG.addHandler(handler)
 
 
-FIELD_SUCCEEDED = '_succeeded'
+SUCCEEDED_FIELD = '_succeeded'
 
 
 class Mapper(abc.ABC):
@@ -56,13 +56,13 @@ class Mapper(abc.ABC):
                 result = self._map(x)
             except Exception as ex:
                 LOG.error("Item: %s - Exception: %s", x, ex)
-                return { FIELD_SUCCEEDED: False}
+                return {SUCCEEDED_FIELD: False}
             else:
                 if error.getvalue():
                     LOG.error("Item: %s - Output: %s", x, error.getvalue())
                 if out.getvalue():
                     LOG.info("Item: %s - Output: %s", x, out.getvalue())
-                result[FIELD_SUCCEEDED] = True
+                result[SUCCEEDED_FIELD] = True
                 return result
 
     @abc.abstractmethod
@@ -89,7 +89,7 @@ def process_file(
     with open(fname, "r") as cvsin, open(
         _output_file_name(fname, file_name_suffix), "w"
     ) as cvsout, Counter(f"{fname}: ") as counter:
-        fieldnames = [ROW_FIELD, FIELD_SUCCEEDED] + mapper.fieldnames
+        fieldnames = [ROW_FIELD, SUCCEEDED_FIELD] + mapper.fieldnames
         reader = csv.DictReader(cvsin)
         writer = csv.DictWriter(cvsout, fieldnames=fieldnames)
         writer.writeheader()
