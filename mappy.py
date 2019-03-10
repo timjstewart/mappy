@@ -32,7 +32,7 @@ SUCCEEDED_FIELD = '_succeeded'
 class Mapper(abc.ABC):
     """
     Maps rows from an input CSV file to rows in an output CSV file containing
-    the fields specified in the __init__ call..
+    the fields specified in the __init__ call.
     """
 
     def __init__(self, fieldnames: List[str]) -> None:
@@ -47,7 +47,7 @@ class Mapper(abc.ABC):
     def map(self, x: Dict[str, Any]) -> Dict[str, Any]:
         """
         Maps a single row from an input CSV file to a single row in an output
-        CSV file containing the fields specified in the __init__ call..
+        CSV file containing the fields specified in the __init__ call.
         """
         out = io.StringIO()
         error = io.StringIO()
