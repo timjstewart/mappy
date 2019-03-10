@@ -21,7 +21,7 @@ from progress.counter import Counter
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger()
 LOG.handlers = []
-handler = logging.FileHandler("mappy.log")
+handler = logging.FileHandler("parcsv.log")
 handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 LOG.addHandler(handler)
 

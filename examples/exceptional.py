@@ -1,13 +1,13 @@
 import sys
 from typing import Dict, Any
 
-import mappy
+import parcsv
 
 
-class MyExceptionalMapper(mappy.Mapper):
+class MyExceptionalMapper(parcsv.Mapper):
     def _map(self, x: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError('An exception was raised.')
 
 
 if __name__ == "__main__":
-    mappy.process_files(MyExceptionalMapper(["a", "b"]), sys.argv[1:])
+    parcsv.process_files(MyExceptionalMapper(["a", "b"]), sys.argv[1:])

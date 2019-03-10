@@ -1,10 +1,10 @@
 import sys
 from typing import Dict, Any
 
-import mappy
+import parcsv
 
 
-class MyIdentityMapper(mappy.Mapper):
+class MyIdentityMapper(parcsv.Mapper):
     def _map(self, x: Dict[str, Any]) -> Dict[str, Any]:
         return x
 
@@ -30,4 +30,4 @@ if __name__ == "__main__":
         "tiv_2011",
         "eq_site_deductible",
     ]
-    mappy.process_files(MyIdentityMapper(fieldnames), sys.argv[1:])
+    parcsv.process_files(MyIdentityMapper(fieldnames), sys.argv[1:])

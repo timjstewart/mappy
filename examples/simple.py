@@ -1,10 +1,10 @@
 import sys
 from typing import Dict, Any
 
-import mappy
+import parcsv
 
 
-class MyMapper(mappy.Mapper):
+class MyMapper(parcsv.Mapper):
     def _map(self, x: Dict[str, Any]) -> Dict[str, Any]:
         print("stdout output")
         sys.stderr.write("stderr output")
@@ -12,4 +12,4 @@ class MyMapper(mappy.Mapper):
 
 
 if __name__ == "__main__":
-    mappy.process_files(MyMapper(["a", "b"]), sys.argv[1:])
+    parcsv.process_files(MyMapper(["a", "b"]), sys.argv[1:])
