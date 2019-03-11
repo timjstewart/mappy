@@ -87,12 +87,12 @@ def process_file(
     through the mapper using multiple processes.
     """
     ROW_FIELD = "_row"
-    with open(fname, "r") as cvsin, open(
+    with open(fname, "r") as csvin, open(
         _output_file_name(fname, file_name_suffix), "w"
-    ) as cvsout, Counter(f"{fname}: ") as counter:
+    ) as csvout, Counter(f"{fname}: ") as counter:
         fieldnames = [ROW_FIELD, SUCCEEDED_FIELD] + mapper.fieldnames
-        reader = csv.DictReader(cvsin)
-        writer = csv.DictWriter(cvsout, fieldnames=fieldnames)
+        reader = csv.DictReader(csvin)
+        writer = csv.DictWriter(csvout, fieldnames=fieldnames)
         writer.writeheader()
         for i, row in enumerate(pool.imap(mapper.map, reader, chunksize=chunksize), 1):
             counter.next()
