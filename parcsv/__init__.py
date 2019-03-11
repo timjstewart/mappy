@@ -79,7 +79,8 @@ def _output_file_name(input_file_name: str, suffix: str) -> str:
 
 
 def process_file(
-    mapper: Mapper, fname: str, pool: Pool, file_name_suffix: str = "_mapped"
+        mapper: Mapper, fname: str, pool: Pool, chunksize: int,
+        file_name_suffix: str = "_mapped"
 ) -> None:
     """
     Creates a new CSV file by running each row in the input file named fname
@@ -93,16 +94,17 @@ def process_file(
         reader = csv.DictReader(cvsin)
         writer = csv.DictWriter(cvsout, fieldnames=fieldnames)
         writer.writeheader()
-        for i, row in enumerate(pool.imap(mapper.map, reader, chunksize=256), 1):
+        for i, row in enumerate(pool.imap(mapper.map, reader, chunksize=chunksize), 1):
             counter.next()
             try:
                 row[ROW_FIELD] = i
                 writer.writerow(row)
+                csvout.flush()
             except ValueError as ex:
                 LOG.error("error writing row: %s", str(ex))
 
 
-def process_files(mapper: Mapper, fnames: List[str]) -> None:
+def process_files(mapper: Mapper, fnames: List[str], chunksize: int = 1) -> None:
     """
     Applies the mapper to all of the files in fnames.
     """
@@ -113,7 +115,7 @@ def process_files(mapper: Mapper, fnames: List[str]) -> None:
     with Pool(initializer=initializer) as pool:
         try:
             for fname in fnames:
-                process_file(mapper, fname, pool)
+                process_file(mapper, fname, pool, chunksize=chunksize)
         except KeyboardInterrupt:
             sys.stderr.write("Cancelled by Ctrl-C!\n")
             pool.terminate()
